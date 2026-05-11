@@ -6,6 +6,9 @@ shell config (.zshrc, .bashrc, ghostty, ...) as well as for utilies/apps like mp
 
 It's primarily for my own use/backup, but hope to update this README and whatnot for others use and learning.
 
+### Bootstrap
+`yadm` includes the ability to run a bootstrap file (an executable) to take care of initial system config/setup tasks for you.
+ - My current [bootstrap](.config/yadm/bootstrap).
 
 ### References
  - [`yadm` man page (EN) - Arch](https://man.archlinux.org/man/yadm.1.en)
