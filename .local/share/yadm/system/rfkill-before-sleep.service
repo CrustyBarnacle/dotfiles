@@ -1,0 +1,17 @@
+# Wakup Issues (Framework Laptop 13 - AMD Ryzen 7040 Series)
+# https://wiki.archlinux.org/title/Framework_Laptop_13_(AMD_Ryzen_7040_Series)#Wakeup_issues
+
+[Unit]
+Description=Disable wifi and bluetooth before suspend
+DefaultDependencies=no
+StopWhenUnneeded=yes
+Before=sleep.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/rfkill block all
+ExecStop=/usr/sbin/rfkill unblock all
+
+[Install]
+WantedBy=sleep.target

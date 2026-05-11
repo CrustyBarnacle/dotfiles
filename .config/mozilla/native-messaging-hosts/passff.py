@@ -1,0 +1,1 @@
+/home/togusa/.mozilla/native-messaging-hosts/passff.py

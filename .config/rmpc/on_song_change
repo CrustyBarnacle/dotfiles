@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# ~/.config/rmpc/on_song_change
+# Handles album art for streams, specifically SomaFM.
+# For SomaFM streams, fetches the station logo and saves it as the
+# dynamic album art so rmpc displays it instead of the default fallback.
+#
+# SomaFM stream URLs follow the pattern:
+#   https://ice*.somafm.com/{station}-{bitrate}-{format}
+# Station art is at: https://somafm.com/img3/{station}-400.jpg
+#
+# For non-SomaFM streams and local files, does nothing — rmpc uses
+# embedded art or default_album_art_path from the theme as fallback.
+#
+# Environment variables provided by rmpc:
+#   $FILE     — file path or stream URL of current song
+#   $TITLE    — song title
+#   $ARTIST   — artist
+#   $ALBUM    — album
+
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/rmpc/stream-art"
+mkdir -p "$CACHE_DIR"
+
+# Only handle http streams
+if [[ "$FILE" != http* ]]; then
+    exit 0
+fi
+
+# ── SomaFM ────────────────────────────────────────────────────────────────────
+
+if [[ "$FILE" == *somafm.com* ]]; then
+    # Extract station slug from URL
+    # e.g. https://ice4.somafm.com/groovesalad-128-aac → groovesalad
+    STATION=$(echo "$FILE" | grep -oP '(?<=/)[a-z]+(?=-\d)')
+
+    if [ -z "$STATION" ]; then
+        exit 0
+    fi
+
+    CACHED_ART="$CACHE_DIR/somafm-${STATION}.jpg"
+
+    # Download only if not already cached
+    if [ ! -f "$CACHED_ART" ]; then
+        ART_URL="https://somafm.com/img3/${STATION}-400.jpg"
+        curl -sf --max-time 10 -o "$CACHED_ART" "$ART_URL" || rm -f "$CACHED_ART"
+    fi
+
+    # If we have the art, copy it to the dynamic art path
+    if [ -f "$CACHED_ART" ]; then
+        DYNAMIC_ART="$CACHE_DIR/current.jpg"
+        cp "$CACHED_ART" "$DYNAMIC_ART"
+        # Note: rmpc reloads default_album_art_path on song change if
+        # enable_config_hot_reload is true and the path points to this file.
+        # For now this is a cache — future rmpc versions will support
+        # custom_loader for dynamic per-song art injection.
+    fi
+
+    exit 0
+fi
+
+# ── Other streams ─────────────────────────────────────────────────────────────
+# Nothing to do — rmpc will use embedded art or the theme default fallback.
+
+exit 0

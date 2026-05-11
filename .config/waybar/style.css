@@ -1,0 +1,143 @@
+@define-color base-bg #010101;
+@define-color base-text #ffffff;
+@define-color highlight-bg rgba(255, 255, 255, 0.4);
+@define-color highlight-border rgba(255, 255, 255, 0.0);
+@define-color urgent-bg rgba(255, 125, 125, .5);
+@define-color urgent-text #ffffff;
+@define-color urgent-border #ff7e71;
+@define-color inactive-text alpha(@base-text, 0.5);
+
+* {
+    font-family: 'Symbols Nerd Font';
+    font-size: 15px;
+    transition-duration: 0.3s;
+    border-color: rgba(0,0,0,0)
+    }
+.module {
+    padding: 0px 7px;
+    border-radius: 55px;
+}
+:focus {
+    background-color: @highlight-bg;
+    border-color: @highlight-bg;
+    border-radius: 55px;
+    box-shadow: inset 0px -2px @highlight-border;
+}
+:hover {
+    background-color: @highlight-bg;
+    border-color: @highlight-bg;
+    border-radius: 55px;
+    box-shadow: inset 0px -2px @highlight-border;
+}
+tooltip {
+    background-color: @base-bg;
+    border: none;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px @highlight-border;
+    padding: 15px;
+    margin: 10px;}
+window {
+    background-color: @base-bg;
+    color: @base-text;
+    border-bottom: 2px #0fffff;}
+window#waybar {
+}
+window#waybar.hidden {
+}
+window#waybar.empty {
+}
+window#waybar.solo {
+}
+button {
+}
+image {
+    padding: 0px 14px;
+}
+.modules-left > widget:first-child > #workspaces {
+    /* If workspaces is the leftmost module, omit left margin */
+    margin-left: 0px;}
+*.disconnected, *.deactivated, *.disabled {
+    color: @inactive-text;}
+@keyframes neutral {
+    from {
+        border-color: #0000ff;
+    }
+    to {
+        border-color: #00ff00;
+        border-width: 30px
+    }
+}
+@keyframes blink {
+    to {
+        background-color: @urgent-bg;
+        box-shadow: inset 0px -3px @urgent-border;
+        color: @urgent-text;
+    }
+}
+
+/* ============
+ *   MODULES  
+ * ============ */
+#battery.critical:not(.charging) {
+    /* Using steps() instead of linear as a timing function to limit cpu usage */
+    background-color: #f53c3c;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(12);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;}
+#bluetooth.panel.connected, #custom-upower, #wireplumber.panel {
+    background-color: #437fec;
+    border-radius: 5px;
+    color: #ffffff;
+    margin: 20px;
+    padding: 10px 35px 10px 35px;
+    font-family: 'mono';}
+#drawer:hover {
+    background-color: #ff0000;
+}
+keyboard-state > label.locked {
+    background: rgba(0, 0, 0, 0.7);}
+#network.mullvad {
+    animation-name: blink;
+    animation-duration: 1s;
+    animation-timing-function: steps(2);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;}
+#network.mullvad.disconnected {
+    }
+#network.mullvad.ethernet {
+    animation-name: none;}
+#privacy-item {
+    animation-name: blink;
+    transition-property: none;
+    animation-duration: 2s;
+    animation-timing-function: steps(48);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    /*box-shadow: inset 0 -3px @urgent-border;*/}
+#tray {
+    margin-right: 9px;
+}
+#tray > .passive {
+    -gtk-icon-effect: dim;}
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;}
+#workspaces {
+    border: none;
+    margin: 0 4px;}
+#workspaces :hover{
+    background: @bar-bg;
+    border: none;}
+#workspaces button {
+    padding: 0 5px;}
+#workspaces button.focused {
+    
+    }
+#workspaces button:hover {
+    background-color: @highlight-bg;}
+#workspaces button.urgent {
+    background-color: @urgent-bg; 
+    box-shadow: inset 0 -2px @urgent-border;}
+

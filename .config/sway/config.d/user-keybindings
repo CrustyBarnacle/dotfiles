@@ -1,0 +1,2 @@
+# my keybindings
+bindsym $mod+w exec notify-send "Weather" "📍 Pasadena, CA | 58°F | Wind: NW 2 mph | Humidity: 92% | 🧥 Jacket recommended (below 65°F)"

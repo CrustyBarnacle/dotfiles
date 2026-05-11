@@ -1,0 +1,23 @@
+# ~/.zsh/aliases-arch.zsh
+# Arch Linux specific aliases — only sourced on Arch via yadm alternate
+# yadm filename: aliases-arch.zsh##distro.Arch
+
+# ─── Package management ───────────────────────────────────────────────────────
+
+alias pacu='sudo pacman -Syu'            # full system upgrade (safe)
+alias paci='sudo pacman -S'             # install package
+alias pacr='sudo pacman -Rns'           # remove package + deps + config
+alias pacs='pacman -Ss'                 # search repos
+alias pacq='pacman -Qs'                 # search installed packages
+alias pacinfo='pacman -Qi'              # package info
+
+# ─── Music (MPD / rmpc) ───────────────────────────────────────────────────────
+
+alias m='rmpc'
+
+# ─── Sway / Wayland ───────────────────────────────────────────────────────────
+
+# lock-wallpaper is a local symlink → ~/Images/Wallpaper/<image>
+# Update the symlink to change the lock screen image, don't edit this alias
+alias lock='systemctl sleep && swaylock -i ~/Images/lock-wallpaper'
+alias claudecode='~/Projects/Containers/claudecode/claude-sandbox'

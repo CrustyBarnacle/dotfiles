@@ -1,0 +1,8 @@
+# That there server don't know nothing 'bout Ghostty
+shell-integration-features = ssh-env,ssh-terminfo
+
+# terminal background-image
+background-image = ~/Images/default-terminal-art.png
+background-image-opacity = 1
+background-image-position = center
+background-image-fit = contain

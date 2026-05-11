@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# yadm bootstrap — runs after `yadm clone` on a new machine
+# Execute manually with: yadm bootstrap
+
+set -e
+
+echo "→ Installing pacman hooks (requires sudo)..."
+sudo mkdir -p /etc/pacman.d/hooks
+sudo cp ~/.local/share/yadm/system/pkglist.hook \
+    /etc/pacman.d/hooks/pkglist.hook
+
+echo "→ Installing firewall..."
+sudo pacman -S --needed ufw
+sudo ufw enable
+
+echo "→ Enabling user services..."
+systemctl --user enable --now mpd.socket
+
+echo "→ Installing system services (requires sudo)..."
+sudo cp ~/.local/share/yadm/system/rfkill-before-sleep.service \
+    /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now rfkill-before-sleep.service
+
+# How to create the default terminal art symlink if not present
+if [[ ! -e ~/Images/default-terminal-art.png ]]; then
+    echo "→ Set up symlink for Ghostty background"
+    echo "      ln -s ~/Images/Wallpaper/<image>.png ~/Images/default-terminal-art.png"
+fi
+
+echo "→ Building Podman nettools image..."
+podman build -t nettools ~/.config/containers/nettools/
+
+echo "→ Building OpenCode image..."
+podman build -t opencode ~/.config/containers/opencode/Containerfile
+
+echo ""
+echo "✓ Bootstrap complete."
+echo ""
+echo "⚠ Remaining manual steps:"
+echo "  - Set yadm class:    yadm config local.class workstation"
+echo "  - Add remote:        yadm remote add origin <url>"
+echo "  - Push:              yadm push -u origin main"

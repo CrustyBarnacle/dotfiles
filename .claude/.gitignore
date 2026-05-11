@@ -1,0 +1,7 @@
+# Exclude everything in ~/.claude by default
+*
+
+# Allow only non-sensitive config files
+!.gitignore
+!settings.json
+!statusline-command.sh

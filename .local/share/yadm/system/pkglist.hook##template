@@ -1,0 +1,10 @@
+[Trigger]
+Operation = Install
+Operation = Remove
+Operation = Upgrade
+Type = Package
+Target = *
+
+[Action]
+When = PostTransaction
+Exec = /bin/sh -c 'sudo -u {{ yadm.user }} pacman -Qqe > /home/{{ yadm.user }}/.local/share/yadm/pkglist/packages.txt; sudo -u {{ yadm.user }} pacman -Qqd > /home/{{ yadm.user }}/.local/share/yadm/pkglist/packages-optional.txt'
