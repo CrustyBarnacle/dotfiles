@@ -30,6 +30,7 @@ htop
 imagemagick
 jq
 kitty
+krita
 libpulse
 linux
 linux-firmware
@@ -37,7 +38,6 @@ lsof
 man-pages
 man-pages-es
 minecraft-launcher
-minecraft-launcher-debug
 mpd
 neovim
 networkmanager

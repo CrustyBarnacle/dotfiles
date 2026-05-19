@@ -24,6 +24,7 @@ bash
 basic256-debug
 binutils
 bison
+blas
 bluez-libs
 brotli
 bubblewrap
@@ -35,6 +36,7 @@ cairo
 cairomm
 cairomm-1.16
 catatonit
+cblas
 cdparanoia
 chromaprint
 confuse
@@ -65,6 +67,7 @@ efivar
 ell
 espeak
 espeak-debug
+exiv2
 exo
 expat
 faad2
@@ -81,6 +84,7 @@ flex
 fluidsynth
 fmt
 fontconfig
+freeglut
 freetype2
 fribidi
 fuse-common
@@ -100,12 +104,14 @@ ghostty-shell-integration
 ghostty-terminfo
 giflib
 git
+glew
 glib-networking
 glib2
 glibc
 glibmm
 glibmm-2.68
 glslang
+glu
 glycin
 gmp
 gnome-keyring
@@ -126,6 +132,7 @@ grim
 groff
 gsettings-desktop-schemas
 gsettings-system-schemas
+gsl
 gsm
 gssdp
 gst-plugins-bad-libs
@@ -152,6 +159,7 @@ hwdata
 iana-etc
 icu
 ijs
+imath
 imlib2
 iniparser
 iproute2
@@ -166,9 +174,16 @@ json-c
 json-glib
 jsoncpp
 kbd
+kcodecs
+kcolorscheme
+kcompletion
 kconfig
+kcoreaddons
+kcrash
 keyutils
 kguiaddons
+ki18n
+kitemviews
 kitty-shell-integration
 kitty-terminfo
 kmod
@@ -176,6 +191,7 @@ knotifications
 krb5
 krun
 kstatusnotifieritem
+kwidgetsaddons
 kwindowsystem
 l-smash
 lame
@@ -268,6 +284,7 @@ libisl
 libjcat
 libjpeg-turbo
 libjxl
+libkdcraw
 libkrun
 libkrunfw
 libksba
@@ -327,6 +344,7 @@ libqmi
 libqrtr-glib
 libquadmath
 libraqm
+libraw
 libraw1394
 librsvg
 librsync
@@ -445,10 +463,13 @@ man-db
 md4c
 mdadm
 mesa
+minecraft-launcher-debug
 miniaudio
 minizip
+minizip-ng
 mkinitcpio
 mkinitcpio-busybox
+mlt
 mobile-broadband-provider-info
 mpdecimal
 mpfr
@@ -467,9 +488,12 @@ nss
 ocl-icd
 oniguruma
 openal
+opencolorio
 opencore-amr
+openexr
 openh264
 openjpeg2
+openjph
 openssl
 opus
 opusfile
@@ -510,6 +534,7 @@ procps-ng
 protobuf
 protobuf-c
 psmisc
+pystring
 python
 python-autocommand
 python-black
@@ -575,6 +600,7 @@ qt6-translations
 qt6-webchannel
 qt6-webengine
 qtkeychain-qt6
+quazip-qt6
 rav1e
 re2
 readline
@@ -678,6 +704,7 @@ xvidcore
 xxhash
 xz
 yajl
+yaml-cpp
 zeromq
 zimg
 zix
