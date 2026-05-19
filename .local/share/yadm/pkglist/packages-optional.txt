@@ -21,6 +21,7 @@ automake
 avahi
 base-devel
 bash
+basic256-debug
 binutils
 bison
 bluez-libs
@@ -34,6 +35,7 @@ cairo
 cairomm
 cairomm-1.16
 catatonit
+cdparanoia
 chromaprint
 confuse
 conmon
@@ -61,6 +63,8 @@ duktape
 e2fsprogs
 efivar
 ell
+espeak
+espeak-debug
 exo
 expat
 faad2
@@ -125,6 +129,7 @@ gsettings-system-schemas
 gsm
 gssdp
 gst-plugins-bad-libs
+gst-plugins-base
 gst-plugins-base-libs
 gstreamer
 gtest
@@ -554,6 +559,12 @@ python-zipp
 python-zxcvbn
 qca-qt6
 qpdf
+qt5-base
+qt5-declarative
+qt5-multimedia
+qt5-serialport
+qt5-speech
+qt5-translations
 qt6-5compat
 qt6-base
 qt6-declarative

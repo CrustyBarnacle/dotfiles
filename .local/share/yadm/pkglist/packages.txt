@@ -1,5 +1,6 @@
 amd-ucode
 base
+basic256
 bat
 bc
 bluez
@@ -35,6 +36,8 @@ linux-firmware
 lsof
 man-pages
 man-pages-es
+minecraft-launcher
+minecraft-launcher-debug
 mpd
 neovim
 networkmanager
@@ -55,6 +58,7 @@ podman
 power-profiles-daemon
 python-j2cli
 python-lsp-server
+qt5-wayland
 qutebrowser
 rmpc
 sl
