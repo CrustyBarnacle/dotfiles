@@ -5,6 +5,7 @@
 # ─── Safety nets ──────────────────────────────────────────────────────────────
 
 alias rm='rm -i'
+alias 'rm -r'='rm -ri'
 alias mv='mv -i'
 alias cp='cp -i'
 
@@ -21,8 +22,10 @@ alias ls='ls --color=auto'
 alias ll='ls -lah --color=auto'
 alias grep='grep --color=auto'
 
-# ─── Help output via bat ──────────────────────────────────────────────────────
+# ─── Utility ──────────────────────────────────────────────────────
+alias cssh='TERM=xterm-256color ssh'
 
+# ─── Help output via bat ──────────────────────────────────────────────────────
 h() { "${1}" --help 2>&1 | bat -l help -p; }
 
 # ─── Network ──────────────────────────────────────────────────────────────────
