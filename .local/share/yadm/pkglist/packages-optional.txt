@@ -26,6 +26,7 @@ binutils
 bison
 blas
 bluez-libs
+boost-libs
 brotli
 bubblewrap
 bzip2
@@ -43,6 +44,7 @@ confuse
 conmon
 containers-common
 coreutils
+cpio
 criu
 crun
 cryptsetup
@@ -64,6 +66,7 @@ double-conversion
 duktape
 e2fsprogs
 efivar
+elfutils
 ell
 espeak
 espeak-debug
@@ -96,6 +99,8 @@ gcc
 gcc-libs
 gcr
 gcr-4
+gdb
+gdb-common
 gdbm
 gdk-pixbuf2
 gettext
@@ -156,6 +161,7 @@ hicolor-icon-theme
 hidapi
 highway
 hwdata
+hwloc
 iana-etc
 icu
 ijs
@@ -210,6 +216,7 @@ libatasmart
 libatomic
 libavc1394
 libb2
+libblake3
 libblockdev
 libblockdev-crypto
 libblockdev-fs
@@ -253,6 +260,7 @@ libepoxy
 libevdev
 libevent
 libexif
+libfabric
 libfdk-aac
 libffi
 libfido2
@@ -485,7 +493,9 @@ noto-fonts-emoji
 npth
 nspr
 nss
+numactl
 ocl-icd
+onetbb
 oniguruma
 openal
 opencolorio
@@ -494,7 +504,10 @@ openexr
 openh264
 openjpeg2
 openjph
+openmpi
+openpmix
 openssl
+openucx
 opus
 opusfile
 orc
@@ -533,6 +546,7 @@ pps-tools
 procps-ng
 protobuf
 protobuf-c
+prrte
 psmisc
 pystring
 python
@@ -621,6 +635,7 @@ snappy
 sndio
 sord
 sound-theme-freedesktop
+source-highlight
 spandsp
 spdlog
 speex
@@ -677,6 +692,7 @@ which
 wildmidi
 wl-clipboard
 wlroots0.19
+wlroots0.20
 x264
 x265
 xcb-proto
