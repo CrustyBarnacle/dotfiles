@@ -367,6 +367,7 @@ libshout
 libsidplayfp
 libsigc++
 libsigc++-3.0
+libsixel
 libslirp
 libsm
 libsndfile
@@ -430,6 +431,7 @@ libxkbcommon-x11
 libxkbfile
 libxml2
 libxmlb
+libxpresent
 libxrandr
 libxrender
 libxshmfence
@@ -487,6 +489,7 @@ mpfr
 mpg123
 msgpack-c
 mtdev
+mujs
 ncurses
 netavark
 nettle
@@ -674,6 +677,7 @@ ttf-liberation
 ttf-nerd-fonts-symbols-common
 twolame
 tzdata
+uchardet
 unibilium
 upower
 util-linux

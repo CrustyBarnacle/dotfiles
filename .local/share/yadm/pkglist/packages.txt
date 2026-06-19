@@ -42,6 +42,7 @@ man-pages
 man-pages-es
 minecraft-launcher
 mpd
+mpv
 neovim
 networkmanager
 openbsd-netcat
