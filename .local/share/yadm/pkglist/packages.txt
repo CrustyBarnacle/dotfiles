@@ -20,6 +20,8 @@ expac
 feh
 firefox
 fuse-overlayfs
+fuse2
+fuseiso
 fwupd
 fzf
 ghostty
@@ -69,6 +71,7 @@ sof-firmware
 sudo
 sway
 system-config-printer
+termshark
 thunar
 tinyproxy
 tmux
@@ -86,7 +89,6 @@ wofi
 wpa_supplicant
 yadm
 yay
-yay-debug
 zip
 zram-generator
 zsh

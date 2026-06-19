@@ -22,6 +22,7 @@ avahi
 base-devel
 bash
 basic256-debug
+bcg729
 binutils
 bison
 blas
@@ -30,6 +31,7 @@ boost-libs
 brotli
 bubblewrap
 bzip2
+c-ares
 ca-certificates
 ca-certificates-mozilla
 ca-certificates-utils
@@ -305,6 +307,7 @@ liblsan
 libluv
 libmad
 libmakepkg-dropins
+libmaxminddb
 libmbim
 libmd
 libmikmod
@@ -690,6 +693,7 @@ wayland
 webrtc-audio-processing-1
 which
 wildmidi
+wireshark-cli
 wl-clipboard
 wlroots0.19
 wlroots0.20
@@ -721,6 +725,7 @@ xxhash
 xz
 yajl
 yaml-cpp
+yay-debug
 zeromq
 zimg
 zix
