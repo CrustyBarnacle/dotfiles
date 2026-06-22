@@ -178,6 +178,7 @@ iwd
 jansson
 jbig2dec
 jbigkit
+jemalloc
 json-c
 json-glib
 jsoncpp
