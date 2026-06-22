@@ -34,7 +34,6 @@ john
 jq
 kitty
 krita
-lib32-glibc
 libpulse
 linux
 linux-firmware
