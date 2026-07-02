@@ -3,6 +3,7 @@ base
 basic256
 bat
 bc
+blackarch-mirrorlist
 bluez
 bluez-utils
 brightnessctl
@@ -52,6 +53,7 @@ pass
 pass-import
 pastel
 pavucontrol
+perl-image-exiftool
 pianobar
 picocom
 pipewire

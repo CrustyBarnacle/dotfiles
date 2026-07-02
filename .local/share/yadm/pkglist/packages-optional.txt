@@ -282,6 +282,7 @@ libgomp
 libgpg-error
 libgtop
 libgudev
+libhwasan
 libice
 libid3tag
 libidn
