@@ -71,6 +71,7 @@ seclists
 sl
 slirp4netns
 sof-firmware
+stegseek
 sudo
 sway
 system-config-printer

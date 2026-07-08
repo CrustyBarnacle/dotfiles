@@ -311,6 +311,7 @@ libmad
 libmakepkg-dropins
 libmaxminddb
 libmbim
+libmcrypt
 libmd
 libmikmod
 libmm-glib
@@ -478,6 +479,7 @@ man-db
 md4c
 mdadm
 mesa
+mhash
 minecraft-launcher-debug
 miniaudio
 minizip
