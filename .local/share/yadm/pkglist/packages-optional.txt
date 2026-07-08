@@ -263,6 +263,7 @@ libepoxy
 libevdev
 libevent
 libexif
+libexsid
 libfabric
 libfdk-aac
 libffi
@@ -360,6 +361,7 @@ libquadmath
 libraqm
 libraw
 libraw1394
+libresidfp
 librsvg
 librsync
 libsamplerate
