@@ -632,6 +632,14 @@ re2
 readline
 rtkit
 rubberband
+ruby
+ruby-erb
+ruby-iostruct
+ruby-prime
+ruby-rainbow
+ruby-rdoc
+ruby-zpng
+rubygems
 sbc
 sdl2-compat
 sdl3
