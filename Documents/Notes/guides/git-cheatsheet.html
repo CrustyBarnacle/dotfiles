@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git — log review &amp; data recovery cheatsheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #21262d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #7d8590;
+    --green: #3fb950;
+    --blue: #58a6ff;
+    --purple: #bc8cff;
+    --orange: #f0883e;
+    --red: #ff7b72;
+    --yellow: #d29922;
+    --teal: #39d3c3;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  header h1 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--orange);
+    letter-spacing: -0.5px;
+    margin-bottom: 0.4rem;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .tier {
+    margin-bottom: 2.5rem;
+  }
+
+  .tier-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+  }
+
+  .tier-label.survival { background: rgba(255,123,114,0.15); color: var(--red); }
+  .tier-label.everyday { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .tier-label.power    { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .tier-label.recovery { background: rgba(63,185,80,0.15); color: var(--green); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .grid-wide {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 0.5rem 1rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-header.red    { color: var(--red); }
+  .card-header.blue   { color: var(--blue); }
+  .card-header.green  { color: var(--green); }
+  .card-header.purple { color: var(--purple); }
+  .card-header.orange { color: var(--orange); }
+  .card-header.teal   { color: var(--teal); }
+  .card-header.yellow { color: var(--yellow); }
+
+  table { width: 100%; border-collapse: collapse; }
+  tr { border-bottom: 1px solid var(--border); }
+  tr:last-child { border-bottom: none; }
+  td { padding: 0.45rem 1rem; vertical-align: top; }
+
+  td:first-child {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    width: 46%;
+    color: var(--text);
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  td:last-child {
+    color: var(--muted);
+    font-size: 0.83rem;
+  }
+
+  .k {
+    display: inline-block;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  code { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--purple); }
+
+  .tip {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--yellow);
+    border-radius: 0 8px 8px 0;
+    padding: 0.7rem 1rem;
+    margin-top: 1.25rem;
+    font-size: 0.83rem;
+    color: var(--muted);
+  }
+
+  .tip strong { color: var(--yellow); }
+
+  .exercise-list { padding: 0.25rem 0; }
+
+  .exercise {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .exercise:last-child { border-bottom: none; }
+
+  .ex-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--orange);
+    min-width: 1.5rem;
+    padding-top: 2px;
+  }
+
+  .ex-cmd {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--green);
+    margin-bottom: 2px;
+  }
+
+  .ex-desc { font-size: 0.82rem; color: var(--muted); }
+
+  .full { grid-column: 1 / -1; }
+
+  .section-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin: 1.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>git — log review, lost commits &amp; abandoned branches</h1>
+  <p>Not GitHub — plain <code style="color:var(--muted)">git</code>. Everything here works offline, in any local repo. Nothing is ever quite as gone as it looks.</p>
+</header>
+
+<!-- TIER 1: SURVIVAL -->
+<div class="tier">
+  <div class="tier-label survival">Tier 1 — Survival</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header red">Status &amp; staging</div>
+      <table>
+        <tr><td><code>git status</code></td><td>what's changed, staged, untracked</td></tr>
+        <tr><td><code>git add &lt;file&gt;</code></td><td>stage a file</td></tr>
+        <tr><td><code>git add -p</code></td><td>stage hunks interactively</td></tr>
+        <tr><td><code>git restore --staged &lt;file&gt;</code></td><td>unstage a file</td></tr>
+        <tr><td><code>git commit -m "msg"</code></td><td>commit staged changes</td></tr>
+        <tr><td><code>git commit --amend</code></td><td>edit the last commit (rewrites its hash)</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header red">Diffing</div>
+      <table>
+        <tr><td><code>git diff</code></td><td>unstaged changes vs. index</td></tr>
+        <tr><td><code>git diff --staged</code></td><td>staged changes vs. last commit</td></tr>
+        <tr><td><code>git diff &lt;a&gt; &lt;b&gt;</code></td><td>diff between two commits/branches</td></tr>
+        <tr><td><code>git diff HEAD~3</code></td><td>diff vs. 3 commits ago</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header red">Basic log</div>
+      <table>
+        <tr><td><code>git log</code></td><td>full commit history, newest first</td></tr>
+        <tr><td><code>git log --oneline</code></td><td>one line per commit</td></tr>
+        <tr><td><code>git log -n 5</code></td><td>last 5 commits only</td></tr>
+        <tr><td><code>git show &lt;hash&gt;</code></td><td>full diff of one commit</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header red">Undo (safe, local, uncommitted)</div>
+      <table>
+        <tr><td><code>git restore &lt;file&gt;</code></td><td>discard uncommitted changes to a file</td></tr>
+        <tr><td><code>git checkout -- &lt;file&gt;</code></td><td>same, older syntax</td></tr>
+        <tr><td><code>git clean -n</code></td><td>preview untracked files that would be deleted</td></tr>
+        <tr><td><code>git clean -fd</code></td><td>actually delete untracked files/dirs</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- TIER 2: EVERYDAY -->
+<div class="tier">
+  <div class="tier-label everyday">Tier 2 — Everyday</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header blue">Branches</div>
+      <table>
+        <tr><td><code>git branch</code></td><td>list local branches</td></tr>
+        <tr><td><code>git branch -a</code></td><td>list local + remote branches</td></tr>
+        <tr><td><code>git switch &lt;branch&gt;</code></td><td>change branch</td></tr>
+        <tr><td><code>git switch -c &lt;name&gt;</code></td><td>create + switch to new branch</td></tr>
+        <tr><td><code>git branch -d &lt;name&gt;</code></td><td>delete branch (safe, checks merged)</td></tr>
+        <tr><td><code>git branch -D &lt;name&gt;</code></td><td>force-delete branch (unmerged commits go dangling, not gone — see Tier 4)</td></tr>
+        <tr><td><code>git merge &lt;branch&gt;</code></td><td>merge branch into current</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header blue">Stash</div>
+      <table>
+        <tr><td><code>git stash</code></td><td>shelve uncommitted changes</td></tr>
+        <tr><td><code>git stash list</code></td><td>list all stashes</td></tr>
+        <tr><td><code>git stash pop</code></td><td>reapply + remove most recent stash</td></tr>
+        <tr><td><code>git stash apply stash@{n}</code></td><td>reapply without removing</td></tr>
+        <tr><td><code>git stash drop stash@{n}</code></td><td>delete a stash entry</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header blue">Remotes</div>
+      <table>
+        <tr><td><code>git remote -v</code></td><td>list remotes and their URLs</td></tr>
+        <tr><td><code>git fetch</code></td><td>download remote refs, no merge</td></tr>
+        <tr><td><code>git pull</code></td><td>fetch + merge current branch</td></tr>
+        <tr><td><code>git push</code></td><td>push current branch</td></tr>
+        <tr><td><code>git push -u origin &lt;branch&gt;</code></td><td>push + set upstream tracking</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header blue">Filtering the log</div>
+      <table>
+        <tr><td><code>git log --oneline --graph --all</code></td><td>ASCII graph of every branch</td></tr>
+        <tr><td><code>git log --author="name"</code></td><td>only commits by an author</td></tr>
+        <tr><td><code>git log --since="2 weeks ago"</code></td><td>time-bounded log</td></tr>
+        <tr><td><code>git log -- &lt;path&gt;</code></td><td>only commits touching a path</td></tr>
+        <tr><td><code>git log -S"text"</code></td><td>pickaxe: commits that added/removed a literal string</td></tr>
+        <tr><td><code>git log -G"regex"</code></td><td>same idea, but regex against the diff</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- TIER 3: POWER — ARCHAEOLOGY -->
+<div class="tier">
+  <div class="tier-label power">Tier 3 — Power: history archaeology</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header purple">Full-history sweeps</div>
+      <table>
+        <tr><td><code>git log --all --oneline --graph</code></td><td>every ref, not just current branch</td></tr>
+        <tr><td><code>git log --all --source</code></td><td>same, but shows which ref each commit is from</td></tr>
+        <tr><td><code>git log --all --full-history -- &lt;path&gt;</code></td><td>every version of a file, even if later deleted</td></tr>
+        <tr><td><code>git log --follow -- &lt;path&gt;</code></td><td>follow a file's history across renames</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header purple">git notes — invisible to plain log</div>
+      <table>
+        <tr><td><code>git notes list</code></td><td>list every note and the commit it's attached to</td></tr>
+        <tr><td><code>git notes show &lt;commit&gt;</code></td><td>read the note on a specific commit</td></tr>
+        <tr><td><code>git log --show-notes</code></td><td>show notes inline while browsing history</td></tr>
+        <tr><td colspan="2" style="color:var(--muted);font-size:0.75rem;padding-top:0.3rem">Notes live in <code>refs/notes/commits</code> — a separate ref tree that <code>git log</code> ignores unless asked.</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header purple">Inspecting stash contents</div>
+      <table>
+        <tr><td><code>git stash list</code></td><td>see every stash, even old ones</td></tr>
+        <tr><td><code>git stash show -p stash@{0}</code></td><td>full diff of a stash</td></tr>
+        <tr><td><code>git show stash@{0}</code></td><td>same, via git show</td></tr>
+        <tr><td colspan="2" style="color:var(--muted);font-size:0.75rem;padding-top:0.3rem">A stash is a real (if unusual) commit — <code>git log</code> on its own won't show it, but <code>git show</code>/<code>git cat-file</code> will.</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header purple">blame &amp; bisect</div>
+      <table>
+        <tr><td><code>git blame &lt;file&gt;</code></td><td>who last touched each line, and when</td></tr>
+        <tr><td><code>git blame -L 10,20 &lt;file&gt;</code></td><td>blame just a line range</td></tr>
+        <tr><td><code>git bisect start</code></td><td>begin binary-search for a bad commit</td></tr>
+        <tr><td><code>git bisect good/bad &lt;sha&gt;</code></td><td>mark a commit while bisecting</td></tr>
+        <tr><td><code>git bisect reset</code></td><td>end bisect, return to original HEAD</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- TIER 4: RECOVERY — WHERE'D I PUT THAT -->
+<div class="tier">
+  <div class="tier-label recovery">Tier 4 — "Where'd I put that?!" recovery</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header green">Reflog — your real undo button</div>
+      <table>
+        <tr><td><code>git reflog</code></td><td>every place HEAD has pointed, most recent first</td></tr>
+        <tr><td><code>git reflog show --all</code></td><td>reflogs for every ref, not just HEAD</td></tr>
+        <tr><td><code>git reflog show &lt;branch&gt;</code></td><td>reflog for one specific branch</td></tr>
+        <tr><td><code>git checkout &lt;sha-from-reflog&gt;</code></td><td>jump to any prior state</td></tr>
+        <tr><td colspan="2" style="color:var(--muted);font-size:0.75rem;padding-top:0.3rem">Reflog is local-only and expires (default 90 days) — but it survives resets, rebases, and branch deletion.</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">Dangling &amp; unreachable objects</div>
+      <table>
+        <tr><td><code>git fsck --unreachable</code></td><td>list commits/blobs/trees no ref points to</td></tr>
+        <tr><td><code>git fsck --full --unreachable --dangling</code></td><td>deeper sweep, includes reflog-only objects</td></tr>
+        <tr><td><code>git cat-file -p &lt;hash&gt;</code></td><td>pretty-print any object by its hash</td></tr>
+        <tr><td><code>git cat-file -t &lt;hash&gt;</code></td><td>show an object's type (blob/tree/commit)</td></tr>
+        <tr><td><code>git show &lt;hash&gt;</code></td><td>works on dangling commits too, if you have the hash</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">Recovering a deleted branch</div>
+      <table>
+        <tr><td><code>git reflog | grep checkout</code></td><td>find the last time you were on the deleted branch</td></tr>
+        <tr><td><code>git branch &lt;name&gt; &lt;sha&gt;</code></td><td>recreate a branch pointer at that commit</td></tr>
+        <tr><td><code>git log --walk-reflogs</code></td><td>browse history through reflog entries directly</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">After a bad reset --hard</div>
+      <table>
+        <tr><td><code>git reflog</code></td><td>find the sha you were at before the reset</td></tr>
+        <tr><td><code>git reset --hard &lt;old-sha&gt;</code></td><td>go back to it</td></tr>
+        <tr><td><code>git cherry-pick &lt;sha&gt;</code></td><td>or just replay one lost commit onto current branch</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">Recovering a deleted file's old content</div>
+      <table>
+        <tr><td><code>git log --all --full-history -- &lt;path&gt;</code></td><td>find every commit that touched it</td></tr>
+        <tr><td><code>git show &lt;sha&gt;:&lt;path&gt;</code></td><td>print the file as it was at that commit</td></tr>
+        <tr><td><code>git checkout &lt;sha&gt; -- &lt;path&gt;</code></td><td>restore that version into your working tree</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">Object plumbing reference</div>
+      <table>
+        <tr><td><code>git cat-file -p &lt;hash&gt;</code></td><td>pretty-print blob/tree/commit contents</td></tr>
+        <tr><td><code>git cat-file -t &lt;hash&gt;</code></td><td>type of an object</td></tr>
+        <tr><td><code>git ls-tree -r &lt;hash&gt;</code></td><td>recursively list a tree's contents</td></tr>
+        <tr><td><code>git rev-parse &lt;ref&gt;</code></td><td>resolve any ref/shorthand to its full hash</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXERCISES -->
+<div class="section-title">Guided exercises — practice in any throwaway repo</div>
+<div class="card">
+  <div class="card-header orange">Exercises in order</div>
+  <div class="exercise-list">
+    <div class="exercise">
+      <div class="ex-num">01</div>
+      <div>
+        <div class="ex-cmd">git log --all --oneline --graph</div>
+        <div class="ex-desc">Run this in any repo with more than one branch. Compare it to plain <code>git log</code> — notice how much more shows up.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">02</div>
+      <div>
+        <div class="ex-cmd">git stash; echo "hi" >> some_file; git stash; git stash list</div>
+        <div class="ex-desc">Create two stashes, then inspect one with <code>git stash show -p stash@{0}</code> before popping or dropping it.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">03</div>
+      <div>
+        <div class="ex-cmd">git notes add -m "test note" HEAD~1 && git notes show HEAD~1</div>
+        <div class="ex-desc">Attach a note to an old commit, then confirm plain <code>git log</code> doesn't mention it at all.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">04</div>
+      <div>
+        <div class="ex-cmd">git switch -c throwaway && git commit --allow-empty -m "temp" && git switch main && git branch -D throwaway</div>
+        <div class="ex-desc">Deletes the branch, but not the commit. Now find it: <code>git reflog | grep throwaway</code>.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">05</div>
+      <div>
+        <div class="ex-cmd">git fsck --unreachable</div>
+        <div class="ex-desc">Run right after exercise 04 — the orphaned commit from the deleted branch should show up as an unreachable commit.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">06</div>
+      <div>
+        <div class="ex-cmd">git cat-file -p &lt;hash-from-05&gt;</div>
+        <div class="ex-desc">Read the dangling commit directly by hash, no branch required. This works even after the branch ref is long gone.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">07</div>
+      <div>
+        <div class="ex-cmd">git branch recovered &lt;hash-from-05&gt;</div>
+        <div class="ex-desc">Turn the dangling commit back into a real, reachable branch — fully "un-deleting" it.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">08</div>
+      <div>
+        <div class="ex-cmd">git log -S"some_unique_string" --all</div>
+        <div class="ex-desc">Pickaxe search: find the exact commit that introduced or removed a specific string, anywhere in history.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tip" style="margin-top:1.25rem">
+  <strong>The single best habit to build first:</strong> <code>git log</code> alone shows a tiny slice of what's
+  actually in a repo. Notes, stashes, dangling commits, and reflogs are all real, readable data — they just
+  need their own command to surface. Almost nothing in git is truly gone until <code>git gc</code> runs
+  (and even then, rarely immediately).
+</div>
+
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zsh + fzf — togusa cheatsheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #21262d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #7d8590;
+    --green: #3fb950;
+    --blue: #58a6ff;
+    --purple: #bc8cff;
+    --orange: #f0883e;
+    --red: #ff7b72;
+    --yellow: #d29922;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  header h1 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: -0.5px;
+  }
+
+  header span {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 0.6rem 1rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-header.green { color: var(--green); }
+  .card-header.blue  { color: var(--blue); }
+  .card-header.purple{ color: var(--purple); }
+  .card-header.orange{ color: var(--orange); }
+  .card-header.red   { color: var(--red); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  tr { border-bottom: 1px solid var(--border); }
+  tr:last-child { border-bottom: none; }
+
+  td {
+    padding: 0.5rem 1rem;
+    vertical-align: top;
+  }
+
+  td:first-child {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    color: var(--blue);
+    width: 44%;
+  }
+
+  td:last-child {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .key {
+    display: inline-block;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .tip {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--yellow);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    margin-top: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .tip strong { color: var(--yellow); }
+
+  .modes {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .mode-badge {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+  }
+
+  .mode-badge.active { border-color: var(--green); color: var(--green); }
+  .mode-badge.inactive { color: var(--muted); }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--purple);
+  }
+
+  .full-width { grid-column: 1 / -1; }
+
+  .exercise-list {
+    padding: 0.5rem 0;
+  }
+
+  .exercise {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .exercise:last-child { border-bottom: none; }
+
+  .ex-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--orange);
+    min-width: 1.5rem;
+    padding-top: 2px;
+  }
+
+  .ex-content { flex: 1; }
+
+  .ex-cmd {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--green);
+    margin-bottom: 2px;
+  }
+
+  .ex-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>togusa ~ zsh + fzf</h1>
+  <span>quick reference · your setup</span>
+</header>
+
+<div class="grid">
+
+  <!-- History -->
+  <div class="card">
+    <div class="card-header green">History</div>
+    <table>
+      <tr><td><span class="key">Ctrl+R</span></td><td>fzf fuzzy history search</td></tr>
+      <tr><td><code>!!</code></td><td>repeat last command</td></tr>
+      <tr><td><code>!$</code></td><td>last argument of previous command</td></tr>
+      <tr><td><code>!^</code></td><td>first argument of previous command</td></tr>
+      <tr><td><code>history | grep ssh</code></td><td>search history by text</td></tr>
+      <tr><td><code>setopt HIST_IGNORE_SPACE</code></td><td>prefix cmd with space → not saved</td></tr>
+    </table>
+  </div>
+
+  <!-- fzf -->
+  <div class="card">
+    <div class="card-header blue">fzf keybindings</div>
+    <table>
+      <tr><td><span class="key">Ctrl+R</span></td><td>fuzzy search command history</td></tr>
+      <tr><td><span class="key">Ctrl+T</span></td><td>fuzzy find file, insert into line</td></tr>
+      <tr><td><span class="key">Alt+C</span></td><td>fuzzy cd into subdirectory</td></tr>
+      <tr><td><span class="key">Tab</span></td><td>select multiple results</td></tr>
+      <tr><td><span class="key">Ctrl+/</span></td><td>toggle preview window</td></tr>
+      <tr><td><span class="key">Esc</span></td><td>cancel fzf</td></tr>
+    </table>
+  </div>
+
+  <!-- Navigation -->
+  <div class="card">
+    <div class="card-header purple">Navigation</div>
+    <table>
+      <tr><td><code>cd -</code></td><td>go to previous directory</td></tr>
+      <tr><td><code>cd ~</code></td><td>go home</td></tr>
+      <tr><td><code>dotfiles</code></td><td>just type dirname to cd (autocd)</td></tr>
+      <tr><td><span class="key">Alt+C</span></td><td>fzf cd into any subdir</td></tr>
+      <tr><td><code>ls</code> / <code>ll</code></td><td>list / list long with hidden</td></tr>
+    </table>
+  </div>
+
+  <!-- Line editing -->
+  <div class="card">
+    <div class="card-header orange">Line editing (emacs mode)</div>
+    <table>
+      <tr><td><span class="key">Ctrl+A</span></td><td>jump to start of line</td></tr>
+      <tr><td><span class="key">Ctrl+E</span></td><td>jump to end of line</td></tr>
+      <tr><td><span class="key">Ctrl+W</span></td><td>delete word backwards</td></tr>
+      <tr><td><span class="key">Ctrl+U</span></td><td>delete entire line</td></tr>
+      <tr><td><span class="key">Ctrl+K</span></td><td>delete from cursor to end</td></tr>
+      <tr><td><span class="key">Ctrl+←</span> / <span class="key">Ctrl+→</span></td><td>jump word left / right</td></tr>
+      <tr><td><span class="key">Alt+.</span></td><td>insert last argument of prev cmd</td></tr>
+    </table>
+  </div>
+
+  <!-- Autosuggestions -->
+  <div class="card">
+    <div class="card-header blue">Autosuggestions</div>
+    <table>
+      <tr><td><span class="key">→</span> or <span class="key">Ctrl+F</span></td><td>accept full suggestion</td></tr>
+      <tr><td><span class="key">Alt+→</span></td><td>accept next word of suggestion</td></tr>
+      <tr><td><span class="key">Ctrl+G</span></td><td>dismiss suggestion</td></tr>
+    </table>
+  </div>
+
+  <!-- Your aliases -->
+  <div class="card">
+    <div class="card-header green">Your aliases</div>
+    <table>
+      <tr><td><code>v</code> / <code>vi</code></td><td>nvim</td></tr>
+      <tr><td><code>cat</code></td><td>bat -p (syntax highlighted)</td></tr>
+      <tr><td><code>ll</code></td><td>ls -lah with color</td></tr>
+      <tr><td><code>m</code></td><td>rmpc (MPD client)</td></tr>
+      <tr><td><code>lock</code></td><td>suspend + swaylock</td></tr>
+      <tr><td><code>h &lt;cmd&gt;</code></td><td>show --help via bat</td></tr>
+      <tr><td><code>wifi &lt;ssid&gt;</code></td><td>connect to wifi network</td></tr>
+      <tr><td colspan="2" style="color:var(--muted);font-size:0.75rem;padding-top:0.4rem">── pacman (Arch only) ──</td></tr>
+      <tr><td><code>pacu</code></td><td>full system upgrade (-Syu)</td></tr>
+      <tr><td><code>paci &lt;pkg&gt;</code></td><td>install package</td></tr>
+      <tr><td><code>pacr &lt;pkg&gt;</code></td><td>remove + deps + config (-Rns)</td></tr>
+      <tr><td><code>pacs &lt;term&gt;</code></td><td>search repos</td></tr>
+      <tr><td><code>pacq &lt;term&gt;</code></td><td>search installed packages</td></tr>
+      <tr><td><code>pacinfo &lt;pkg&gt;</code></td><td>show package info</td></tr>
+    </table>
+  </div>
+
+  <!-- Exercises -->
+  <div class="card full-width">
+    <div class="card-header orange">Guided exercises — try these in order</div>
+    <div class="exercise-list">
+      <div class="exercise">
+        <div class="ex-num">01</div>
+        <div class="ex-content">
+          <div class="ex-cmd">Press Ctrl+R and type "pacman"</div>
+          <div class="ex-desc">Find a previous pacman command. Press Enter to run it, or Ctrl+C to cancel. Notice the preview of matching commands.</div>
+        </div>
+      </div>
+      <div class="exercise">
+        <div class="ex-num">02</div>
+        <div class="ex-content">
+          <div class="ex-cmd">Press Ctrl+T from your home directory</div>
+          <div class="ex-desc">Start typing "sway" — watch it filter files across your whole home dir. Press Esc to cancel.</div>
+        </div>
+      </div>
+      <div class="exercise">
+        <div class="ex-num">03</div>
+        <div class="ex-content">
+          <div class="ex-cmd">Press Alt+C and type "waybar"</div>
+          <div class="ex-desc">fzf finds all subdirectories matching "waybar" and cd's into the one you pick.</div>
+        </div>
+      </div>
+      <div class="exercise">
+        <div class="ex-num">04</div>
+        <div class="ex-content">
+          <div class="ex-cmd">Type: cat ~/.config/sway/config</div>
+          <div class="ex-desc">Notice bat's syntax highlighting instead of plain cat output.</div>
+        </div>
+      </div>
+      <div class="exercise">
+        <div class="ex-num">05</div>
+        <div class="ex-content">
+          <div class="ex-cmd">Type: h sway (then try h rmpc)</div>
+          <div class="ex-desc">Your h() function pipes --help output through bat for readable formatting.</div>
+        </div>
+      </div>
+      <div class="exercise">
+        <div class="ex-num">06</div>
+        <div class="ex-content">
+          <div class="ex-cmd">Run any command, then type: echo !$</div>
+          <div class="ex-desc">!$ expands to the last argument of your previous command. Useful for chaining.</div>
+        </div>
+      </div>
+      <div class="exercise">
+        <div class="ex-num">07</div>
+        <div class="ex-content">
+          <div class="ex-cmd">Type a long command, then use Ctrl+A, Ctrl+E, Ctrl+W</div>
+          <div class="ex-desc">Practice jumping to start/end of line and deleting words backwards. These become muscle memory fast.</div>
+        </div>
+      </div>
+      <div class="exercise">
+        <div class="ex-num">08</div>
+        <div class="ex-content">
+          <div class="ex-cmd">Start typing "yadm" — wait for the grey suggestion, press →</div>
+          <div class="ex-desc">Autosuggestions show the most recent matching command in grey. Arrow right accepts it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="tip">
+  <strong>Pro tip:</strong> The single most useful habit to build is <span class="key">Ctrl+R</span> for history search. 
+  You'll stop retyping long commands immediately. After that, <span class="key">Ctrl+W</span> (delete word) 
+  saves more keystrokes than almost anything else.
+</div>
+
+</body>
+</html>

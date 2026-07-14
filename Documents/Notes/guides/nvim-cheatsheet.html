@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neovim / LazyVim — Section-9 cheatsheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #21262d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #7d8590;
+    --green: #3fb950;
+    --blue: #58a6ff;
+    --purple: #bc8cff;
+    --orange: #f0883e;
+    --red: #ff7b72;
+    --yellow: #d29922;
+    --teal: #39d3c3;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  header h1 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--purple);
+    letter-spacing: -0.5px;
+    margin-bottom: 0.4rem;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .tier {
+    margin-bottom: 2.5rem;
+  }
+
+  .tier-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+  }
+
+  .tier-label.survival { background: rgba(255,123,114,0.15); color: var(--red); }
+  .tier-label.everyday { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .tier-label.power    { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .tier-label.lazyvim  { background: rgba(63,185,80,0.15); color: var(--green); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .grid-wide {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 0.5rem 1rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-header.red    { color: var(--red); }
+  .card-header.blue   { color: var(--blue); }
+  .card-header.green  { color: var(--green); }
+  .card-header.purple { color: var(--purple); }
+  .card-header.orange { color: var(--orange); }
+  .card-header.teal   { color: var(--teal); }
+  .card-header.yellow { color: var(--yellow); }
+
+  table { width: 100%; border-collapse: collapse; }
+  tr { border-bottom: 1px solid var(--border); }
+  tr:last-child { border-bottom: none; }
+  td { padding: 0.45rem 1rem; vertical-align: top; }
+
+  td:first-child {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    width: 40%;
+  }
+
+  td:last-child {
+    color: var(--muted);
+    font-size: 0.83rem;
+  }
+
+  .k {
+    display: inline-block;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0 5px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .leader { color: var(--green); font-weight: 600; }
+  code { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--purple); }
+
+  .mode-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .mode {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.9rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+  }
+
+  .mode .key { color: var(--orange); font-weight: 600; }
+  .mode .name { color: var(--text); margin-left: 0.4rem; }
+  .mode .desc { color: var(--muted); font-size: 0.72rem; display: block; margin-top: 1px; }
+
+  .tip {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--yellow);
+    border-radius: 0 8px 8px 0;
+    padding: 0.7rem 1rem;
+    margin-top: 1.25rem;
+    font-size: 0.83rem;
+    color: var(--muted);
+  }
+
+  .tip strong { color: var(--yellow); }
+
+  .exercise-list { padding: 0.25rem 0; }
+
+  .exercise {
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .exercise:last-child { border-bottom: none; }
+
+  .ex-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--orange);
+    min-width: 1.5rem;
+    padding-top: 2px;
+  }
+
+  .ex-cmd {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--green);
+    margin-bottom: 2px;
+  }
+
+  .ex-desc { font-size: 0.82rem; color: var(--muted); }
+
+  .full { grid-column: 1 / -1; }
+
+  .section-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin: 1.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>neovim · lazyvim — Section-9</h1>
+  <p>Space is your leader key. Bottom-left shows current mode. Escape always returns to Normal.</p>
+</header>
+
+<!-- MODES -->
+<div class="section-title">Modes — the most important concept</div>
+<div class="mode-bar">
+  <div class="mode">
+    <span class="key">Esc</span><span class="name">Normal</span>
+    <span class="desc">Home base. Navigate, run commands.</span>
+  </div>
+  <div class="mode">
+    <span class="key">i</span><span class="name">Insert</span>
+    <span class="desc">Type text. Esc to leave.</span>
+  </div>
+  <div class="mode">
+    <span class="key">v</span><span class="name">Visual</span>
+    <span class="desc">Select text. Esc to leave.</span>
+  </div>
+  <div class="mode">
+    <span class="key">V</span><span class="name">Visual Line</span>
+    <span class="desc">Select whole lines.</span>
+  </div>
+  <div class="mode">
+    <span class="key">:</span><span class="name">Command</span>
+    <span class="desc">Run ex commands. Enter to run, Esc to cancel.</span>
+  </div>
+</div>
+
+<!-- TIER 1: SURVIVAL -->
+<div class="tier">
+  <div class="tier-label survival">Tier 1 — Survival</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header red">Getting in and out</div>
+      <table>
+        <tr><td><span class="k">:w</span></td><td>save file</td></tr>
+        <tr><td><span class="k">:q</span></td><td>quit (fails if unsaved changes)</td></tr>
+        <tr><td><span class="k">:wq</span></td><td>save and quit</td></tr>
+        <tr><td><span class="k">:q!</span></td><td>quit without saving</td></tr>
+        <tr><td><span class="k">:qa</span></td><td>quit all windows</td></tr>
+        <tr><td><span class="k">Esc</span></td><td>return to Normal mode from anywhere</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header red">Entering insert mode</div>
+      <table>
+        <tr><td><code>i</code></td><td>insert before cursor</td></tr>
+        <tr><td><code>a</code></td><td>insert after cursor</td></tr>
+        <tr><td><code>o</code></td><td>new line below, insert</td></tr>
+        <tr><td><code>O</code></td><td>new line above, insert</td></tr>
+        <tr><td><code>A</code></td><td>insert at end of line</td></tr>
+        <tr><td><code>I</code></td><td>insert at start of line</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header red">Basic movement</div>
+      <table>
+        <tr><td><code>h j k l</code></td><td>← ↓ ↑ → (or use arrow keys)</td></tr>
+        <tr><td><code>w</code></td><td>next word start</td></tr>
+        <tr><td><code>b</code></td><td>previous word start</td></tr>
+        <tr><td><code>e</code></td><td>next word end</td></tr>
+        <tr><td><code>0</code></td><td>start of line</td></tr>
+        <tr><td><code>$</code></td><td>end of line</td></tr>
+        <tr><td><code>gg</code></td><td>top of file</td></tr>
+        <tr><td><code>G</code></td><td>bottom of file</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header red">Undo / redo</div>
+      <table>
+        <tr><td><code>u</code></td><td>undo</td></tr>
+        <tr><td><span class="k">Ctrl+R</span></td><td>redo</td></tr>
+        <tr><td><code>.</code></td><td>repeat last change — very powerful</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- TIER 2: EVERYDAY -->
+<div class="tier">
+  <div class="tier-label everyday">Tier 2 — Everyday</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header blue">Relative line numbers (your setup)</div>
+      <table>
+        <tr><td><code>5j</code></td><td>move down 5 lines</td></tr>
+        <tr><td><code>12k</code></td><td>move up 12 lines</td></tr>
+        <tr><td><code>3dd</code></td><td>delete 3 lines</td></tr>
+        <tr><td><code>7yy</code></td><td>copy 7 lines</td></tr>
+        <tr><td colspan="2" style="color:var(--muted);font-size:0.75rem;padding-top:0.3rem">Numbers on the left show distance from cursor — use them!</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header blue">Delete / change / copy</div>
+      <table>
+        <tr><td><code>dd</code></td><td>delete line</td></tr>
+        <tr><td><code>cc</code></td><td>change line (delete + insert)</td></tr>
+        <tr><td><code>yy</code></td><td>copy (yank) line</td></tr>
+        <tr><td><code>p</code></td><td>paste after cursor</td></tr>
+        <tr><td><code>P</code></td><td>paste before cursor</td></tr>
+        <tr><td><code>dw</code></td><td>delete word</td></tr>
+        <tr><td><code>cw</code></td><td>change word</td></tr>
+        <tr><td><code>x</code></td><td>delete character under cursor</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header blue">Search</div>
+      <table>
+        <tr><td><code>/pattern</code></td><td>search forward</td></tr>
+        <tr><td><code>?pattern</code></td><td>search backward</td></tr>
+        <tr><td><code>n</code></td><td>next match</td></tr>
+        <tr><td><code>N</code></td><td>previous match</td></tr>
+        <tr><td><code>*</code></td><td>search word under cursor</td></tr>
+        <tr><td><span class="k">Esc</span> or <span class="k">:noh</span></td><td>clear search highlight</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header blue">Visual mode selections</div>
+      <table>
+        <tr><td><code>v</code> then move</td><td>select characters</td></tr>
+        <tr><td><code>V</code></td><td>select whole lines</td></tr>
+        <tr><td><code>y</code> in visual</td><td>copy selection</td></tr>
+        <tr><td><code>d</code> in visual</td><td>delete selection</td></tr>
+        <tr><td><code>c</code> in visual</td><td>change selection</td></tr>
+        <tr><td><code>&gt;</code> / <code>&lt;</code></td><td>indent / dedent selection</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header blue">Windows & splits</div>
+      <table>
+        <tr><td><span class="k">Ctrl+W</span> <code>v</code></td><td>vertical split</td></tr>
+        <tr><td><span class="k">Ctrl+W</span> <code>s</code></td><td>horizontal split</td></tr>
+        <tr><td><span class="k">Ctrl+W</span> <code>h/j/k/l</code></td><td>move between splits</td></tr>
+        <tr><td><span class="k">Ctrl+W</span> <code>q</code></td><td>close split</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header blue">Buffers (open files)</div>
+      <table>
+        <tr><td><span class="k">Shift+H</span></td><td>previous buffer</td></tr>
+        <tr><td><span class="k">Shift+L</span></td><td>next buffer</td></tr>
+        <tr><td><code>:bd</code></td><td>close current buffer</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- TIER 3: LAZYVIM LEADER -->
+<div class="tier">
+  <div class="tier-label lazyvim">LazyVim — Space (leader) commands</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header green">Files</div>
+      <table>
+        <tr><td><span class="leader">Space</span> <code>Space</code></td><td>find file (fuzzy)</td></tr>
+        <tr><td><span class="leader">Space</span> <code>f f</code></td><td>find file</td></tr>
+        <tr><td><span class="leader">Space</span> <code>f r</code></td><td>recent files</td></tr>
+        <tr><td><span class="leader">Space</span> <code>f n</code></td><td>new file</td></tr>
+        <tr><td><span class="leader">Space</span> <code>e</code></td><td>file explorer (neo-tree)</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">Search</div>
+      <table>
+        <tr><td><span class="leader">Space</span> <code>/</code></td><td>search in current file</td></tr>
+        <tr><td><span class="leader">Space</span> <code>s g</code></td><td>grep across all files</td></tr>
+        <tr><td><span class="leader">Space</span> <code>s s</code></td><td>search symbols in file</td></tr>
+        <tr><td><span class="leader">Space</span> <code>s w</code></td><td>search word under cursor</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">Code (LSP)</div>
+      <table>
+        <tr><td><code>g d</code></td><td>go to definition</td></tr>
+        <tr><td><code>g r</code></td><td>go to references</td></tr>
+        <tr><td><code>g I</code></td><td>go to implementation</td></tr>
+        <tr><td><code>K</code></td><td>hover docs</td></tr>
+        <tr><td><span class="leader">Space</span> <code>c r</code></td><td>rename symbol</td></tr>
+        <tr><td><span class="leader">Space</span> <code>c a</code></td><td>code actions</td></tr>
+        <tr><td><span class="leader">Space</span> <code>c f</code></td><td>format file</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">Git</div>
+      <table>
+        <tr><td><span class="leader">Space</span> <code>g g</code></td><td>open lazygit</td></tr>
+        <tr><td><span class="leader">Space</span> <code>g b</code></td><td>git blame line</td></tr>
+        <tr><td><span class="leader">Space</span> <code>g d</code></td><td>diff this file</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">Diagnostics</div>
+      <table>
+        <tr><td><span class="leader">Space</span> <code>x x</code></td><td>diagnostics list</td></tr>
+        <tr><td><code>] d</code></td><td>next diagnostic</td></tr>
+        <tr><td><code>[ d</code></td><td>previous diagnostic</td></tr>
+        <tr><td><span class="leader">Space</span> <code>c d</code></td><td>line diagnostics</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header green">UI toggles</div>
+      <table>
+        <tr><td><span class="leader">Space</span> <code>u w</code></td><td>toggle word wrap</td></tr>
+        <tr><td><span class="leader">Space</span> <code>u n</code></td><td>toggle line numbers</td></tr>
+        <tr><td><span class="leader">Space</span> <code>u l</code></td><td>toggle statusline</td></tr>
+        <tr><td><span class="leader">Space</span> <code>u s</code></td><td>toggle spell check</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- TIER 4: POWER -->
+<div class="tier">
+  <div class="tier-label power">Tier 3 — Power moves (grow into these)</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header purple">Text objects — the real power</div>
+      <table>
+        <tr><td><code>ci"</code></td><td>change inside quotes</td></tr>
+        <tr><td><code>ca"</code></td><td>change around quotes (incl. quotes)</td></tr>
+        <tr><td><code>ci(</code></td><td>change inside parentheses</td></tr>
+        <tr><td><code>cit</code></td><td>change inside HTML tag</td></tr>
+        <tr><td><code>ciw</code></td><td>change inside word</td></tr>
+        <tr><td><code>di{</code></td><td>delete inside braces</td></tr>
+        <tr><td colspan="2" style="color:var(--muted);font-size:0.75rem;padding-top:0.3rem">Pattern: verb + i/a + object. Works with d, c, y, v too.</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header purple">Marks & jumps</div>
+      <table>
+        <tr><td><code>m a</code></td><td>set mark 'a' at cursor</td></tr>
+        <tr><td><code>' a</code></td><td>jump to mark 'a'</td></tr>
+        <tr><td><span class="k">Ctrl+O</span></td><td>jump back (previous location)</td></tr>
+        <tr><td><span class="k">Ctrl+I</span></td><td>jump forward</td></tr>
+        <tr><td><code>''</code></td><td>jump to last position</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header purple">Macros</div>
+      <table>
+        <tr><td><code>q a</code></td><td>start recording macro into register 'a'</td></tr>
+        <tr><td><code>q</code></td><td>stop recording</td></tr>
+        <tr><td><code>@ a</code></td><td>play macro 'a'</td></tr>
+        <tr><td><code>10@a</code></td><td>play macro 'a' 10 times</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header purple">Substitution</div>
+      <table>
+        <tr><td><code>:s/old/new</code></td><td>replace first on line</td></tr>
+        <tr><td><code>:s/old/new/g</code></td><td>replace all on line</td></tr>
+        <tr><td><code>:%s/old/new/g</code></td><td>replace all in file</td></tr>
+        <tr><td><code>:%s/old/new/gc</code></td><td>replace all, confirm each</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXERCISES -->
+<div class="section-title">Guided exercises — open any config file and try these</div>
+<div class="card">
+  <div class="card-header orange">Exercises in order</div>
+  <div class="exercise-list">
+    <div class="exercise">
+      <div class="ex-num">01</div>
+      <div>
+        <div class="ex-cmd">nvim ~/.config/sway/config</div>
+        <div class="ex-desc">Open a file. Move around with h/j/k/l. Press Esc if anything goes wrong. Type :q to quit.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">02</div>
+      <div>
+        <div class="ex-cmd">Press i, type something, press Esc, then u to undo</div>
+        <div class="ex-desc">The insert → normal → undo cycle is the foundation of everything.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">03</div>
+      <div>
+        <div class="ex-cmd">Navigate to a line, press dd, then p to paste it elsewhere</div>
+        <div class="ex-desc">dd cuts the line, p pastes it. This is how you move lines around.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">04</div>
+      <div>
+        <div class="ex-cmd">Press / then type a word to search. Press n to jump to next match.</div>
+        <div class="ex-desc">Search is how you navigate large files. Much faster than scrolling.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">05</div>
+      <div>
+        <div class="ex-cmd">Press Space Space — type a filename fragment</div>
+        <div class="ex-desc">This is LazyVim's fuzzy file finder. The most-used Space command.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">06</div>
+      <div>
+        <div class="ex-cmd">Open a .lua or .py file. Move cursor onto a function name. Press K.</div>
+        <div class="ex-desc">K shows hover documentation from the LSP. Press Esc to close.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">07</div>
+      <div>
+        <div class="ex-cmd">Look at the relative numbers on the left. Type 5j to jump down 5 lines.</div>
+        <div class="ex-desc">Relative numbers tell you exactly how far to jump. This becomes fast.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">08</div>
+      <div>
+        <div class="ex-cmd">Position cursor inside quotes or parens. Type ci" or ci(</div>
+        <div class="ex-desc">Change inside — deletes the contents and puts you in insert mode. One of the most useful text objects.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">09</div>
+      <div>
+        <div class="ex-cmd">Press Space g g to open lazygit (if in a git repo)</div>
+        <div class="ex-desc">Full git UI inside neovim. Press q to quit lazygit.</div>
+      </div>
+    </div>
+    <div class="exercise">
+      <div class="ex-num">10</div>
+      <div>
+        <div class="ex-cmd">Press Space — just Space, then wait</div>
+        <div class="ex-desc">A menu appears showing all available commands. This is your discovery tool — browse it whenever you're curious what's available.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tip" style="margin-top:1.25rem">
+  <strong>The single best habit to build first:</strong> always return to Normal mode with Esc when
+  you're not actively typing. In Normal mode, every key is a command. In Insert mode,
+  every key is text. The switch between them is the core skill.
+</div>
+
+</body>
+</html>

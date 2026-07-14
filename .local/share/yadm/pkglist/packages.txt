@@ -78,6 +78,7 @@ system-config-printer
 termshark
 thunar
 tinyproxy
+tinyxxd
 tmux
 ttf-nerd-fonts-symbols
 udiskie
