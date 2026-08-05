@@ -3,6 +3,7 @@ base
 basic256
 bat
 bc
+binwalk
 blackarch-mirrorlist
 bluez
 bluez-utils
@@ -15,6 +16,7 @@ cups-pdf
 cups-pk-helper
 cyme
 discord
+dosfstools
 drawing
 efibootmgr
 expac
