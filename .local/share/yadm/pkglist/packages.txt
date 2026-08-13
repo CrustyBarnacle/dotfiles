@@ -41,6 +41,7 @@ libpulse
 linux
 linux-firmware
 lsof
+ly
 man-pages
 man-pages-es
 minecraft-launcher
