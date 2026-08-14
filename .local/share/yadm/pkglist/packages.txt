@@ -73,7 +73,6 @@ qt5-wayland
 qutebrowser
 rmpc
 seclists
-sl
 slirp4netns
 sof-firmware
 stegseek
