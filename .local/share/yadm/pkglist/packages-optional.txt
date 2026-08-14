@@ -218,6 +218,7 @@ libasyncns
 libatasmart
 libatomic
 libavc1394
+libavif
 libb2
 libblake3
 libblockdev
@@ -289,6 +290,7 @@ libid3tag
 libidn
 libidn2
 libiec61883
+libimagequant
 libimobiledevice
 libimobiledevice-glue
 libinih
@@ -447,6 +449,7 @@ libxtst
 libxv
 libxxf86vm
 libyaml
+libyuv
 licenses
 lilv
 linux-api-headers
@@ -588,6 +591,7 @@ python-mypy_extensions
 python-packaging
 python-parso
 python-pathspec
+python-pillow
 python-pkg_resources
 python-platformdirs
 python-pluggy

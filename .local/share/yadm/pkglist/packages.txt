@@ -10,6 +10,7 @@ bluez-utils
 brightnessctl
 cava
 chromium
+cmatrix
 copyq
 cups
 cups-pdf
@@ -18,6 +19,7 @@ cyme
 discord
 dosfstools
 drawing
+durdraw
 efibootmgr
 expac
 feh
