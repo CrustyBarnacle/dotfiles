@@ -89,6 +89,7 @@ udiskie
 udisks2
 udisks2-docs
 ufw
+unrar-free
 unzip
 uv
 wayland-protocols
