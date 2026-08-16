@@ -1,0 +1,12 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+cava: (
+    bar_color: Gradient({
+          0: "rgb(  0, 255,   0)",
+         50: "rgb(  0,   0, 255)",
+        100: "rgb(255,   0,   0)",
+    })
+),
+)

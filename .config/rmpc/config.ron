@@ -4,7 +4,7 @@
 (
     address: "127.0.0.1:6600",
     password: None,
-    theme: "~/.config/rmpc/themes/solarized_dark.ron",
+    theme: "~/.config/rmpc/themes/minimal",
     cache_dir: None,
     on_song_change: ["~/.config/rmpc/on_song_change"],
     volume_step: 4,
