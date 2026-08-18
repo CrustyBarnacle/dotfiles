@@ -2,6 +2,7 @@
 #![enable(unwrap_newtypes)]
 #![enable(unwrap_variant_newtypes)]
 (
+default_album_art_path: "/home/{{ yadm.user }}/Images/default-album-art.png",
 cava: (
     bar_color: Gradient({
           0: "rgb(  0, 255,   0)",

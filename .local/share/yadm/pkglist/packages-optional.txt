@@ -40,7 +40,9 @@ cairomm
 cairomm-1.16
 catatonit
 cblas
+cd-discid-debug
 cdparanoia
+cdrtools
 chromaprint
 confuse
 conmon
@@ -677,6 +679,7 @@ systemd
 systemd-libs
 systemd-sysvcompat
 tar
+tcl
 tdb
 texinfo
 thin-provisioning-tools
@@ -706,6 +709,7 @@ vid.stab
 virglrenderer
 vmaf
 volume_key
+vorbis-tools
 vulkan-icd-loader
 vulkan-mesa-implicit-layers
 vulkan-radeon
@@ -713,6 +717,7 @@ wavpack
 waybar
 wayland
 webrtc-audio-processing-1
+wget
 which
 wildmidi
 wireshark-cli

@@ -1,3 +1,4 @@
+abcde
 amd-ucode
 base
 basic256
@@ -9,6 +10,7 @@ bluez
 bluez-utils
 brightnessctl
 cava
+cd-discid
 chromium
 cmatrix
 copyq
@@ -22,6 +24,7 @@ drawing
 durdraw
 efibootmgr
 expac
+expect
 feh
 firefox
 fuse-overlayfs
