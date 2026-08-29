@@ -48,6 +48,7 @@ linux
 linux-firmware
 lsof
 ly
+mako
 man-pages
 man-pages-es
 minecraft-launcher
@@ -100,11 +101,15 @@ ufw
 unrar-free
 unzip
 uv
+waybar
+wayland
 wayland-protocols
 wireplumber
 woff2-font-awesome
 wofi
 wpa_supplicant
+xdg-desktop-portal
+xdg-desktop-portal-wlr
 yadm
 yay
 zip

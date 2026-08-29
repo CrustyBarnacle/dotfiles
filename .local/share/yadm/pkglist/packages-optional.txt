@@ -69,13 +69,11 @@ duktape
 e2fsprogs
 efivar
 elfutils
-ell
 exiv2
 exo
 expat
 faad2
 fakeroot
-fcft
 ffmpeg
 fftw
 file
@@ -171,7 +169,6 @@ iproute2
 iptables
 iputils
 iso-codes
-iwd
 jansson
 jbig2dec
 jbigkit
@@ -476,7 +473,6 @@ lzo
 m4
 mailcap
 make
-mako
 man-db
 md4c
 mdadm
@@ -580,7 +576,6 @@ python-jaraco.functools
 python-jaraco.text
 python-jedi
 python-jinja
-python-keyutils
 python-lsp-jsonrpc
 python-markupsafe
 python-more-itertools
@@ -704,8 +699,6 @@ vulkan-icd-loader
 vulkan-mesa-implicit-layers
 vulkan-radeon
 wavpack
-waybar
-wayland
 webrtc-audio-processing-1
 wget
 which
@@ -723,9 +716,7 @@ xcb-util-image
 xcb-util-keysyms
 xcb-util-renderutil
 xcb-util-wm
-xdg-desktop-portal
 xdg-desktop-portal-gtk
-xdg-desktop-portal-wlr
 xdg-utils
 xfconf
 xkeyboard-config
