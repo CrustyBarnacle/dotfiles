@@ -21,7 +21,6 @@ automake
 avahi
 base-devel
 bash
-basic256-debug
 bcg729
 binutils
 bison
@@ -40,7 +39,6 @@ cairomm
 cairomm-1.16
 catatonit
 cblas
-cd-discid-debug
 cdparanoia
 cdrtools
 chromaprint
@@ -72,8 +70,6 @@ e2fsprogs
 efivar
 elfutils
 ell
-espeak
-espeak-debug
 exiv2
 exo
 expat
@@ -137,7 +133,6 @@ gpsd
 graphene
 graphite
 grep
-grim
 groff
 gsettings-desktop-schemas
 gsettings-system-schemas
@@ -487,7 +482,6 @@ md4c
 mdadm
 mesa
 mhash
-minecraft-launcher-debug
 miniaudio
 minizip
 minizip-ng
@@ -545,6 +539,7 @@ pciutils
 pcre
 pcre2
 pcsclite
+pdfio
 perl
 perl-error
 perl-mailtools
@@ -594,7 +589,6 @@ python-packaging
 python-parso
 python-pathspec
 python-pillow
-python-pkg_resources
 python-platformdirs
 python-pluggy
 python-protobuf
@@ -656,7 +650,6 @@ shaderc
 shadow
 shared-mime-info
 slang
-slurp
 snappy
 sndio
 sord
@@ -672,9 +665,6 @@ sratom
 srt
 startup-notification
 svt-av1
-swaybg
-swayidle
-swaylock
 systemd
 systemd-libs
 systemd-sysvcompat
@@ -722,7 +712,6 @@ which
 wildmidi
 wireshark-cli
 wl-clipboard
-wlroots0.19
 wlroots0.20
 x264
 x265
@@ -752,7 +741,6 @@ xxhash
 xz
 yajl
 yaml-cpp
-yay-debug
 zeromq
 zimg
 zix

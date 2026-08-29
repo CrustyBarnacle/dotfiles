@@ -34,6 +34,7 @@ fwupd
 fzf
 ghostty
 github-cli
+grim
 grub
 gst-plugin-pipewire
 htop
@@ -77,10 +78,14 @@ qutebrowser
 rmpc
 seclists
 slirp4netns
+slurp
 sof-firmware
 stegseek
 sudo
 sway
+swaybg
+swayidle
+swaylock
 system-config-printer
 termshark
 thunar
