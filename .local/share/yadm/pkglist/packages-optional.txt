@@ -41,6 +41,7 @@ catatonit
 cblas
 cdparanoia
 cdrtools
+cfitsio
 chromaprint
 confuse
 conmon
@@ -154,6 +155,7 @@ gupnp
 gupnp-igd
 gzip
 harfbuzz
+hdf5
 hicolor-icon-theme
 hidapi
 highway
@@ -202,6 +204,7 @@ lcms2
 leancrypto
 less
 libadwaita
+libaec
 libaio
 libao
 libarchive
@@ -235,6 +238,7 @@ libcap-ng
 libcbor
 libcdio
 libcdio-paranoia
+libcgif
 libcloudproviders
 libcolord
 libcups
@@ -306,6 +310,7 @@ liblsan
 libluv
 libmad
 libmakepkg-dropins
+libmatio
 libmaxminddb
 libmbim
 libmcrypt
@@ -403,6 +408,7 @@ libuv
 libva
 libvdpau
 libverto
+libvips
 libvorbis
 libvpl
 libvpx
@@ -696,8 +702,6 @@ vmaf
 volume_key
 vorbis-tools
 vulkan-icd-loader
-vulkan-mesa-implicit-layers
-vulkan-radeon
 wavpack
 webrtc-audio-processing-1
 wget
