@@ -1,5 +1,6 @@
 # That there server don't know nothing 'bout Ghostty
 shell-integration-features = ssh-env,ssh-terminfo
+term = xterm-256color
 
 # Theme config
 config-file = ./auto/theme.ghostty
