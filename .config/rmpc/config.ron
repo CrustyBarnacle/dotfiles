@@ -4,8 +4,7 @@
 (
     address: "127.0.0.1:6600",
     password: None,
-    theme: "~/.cache/wal/colors-rmpc-theme.ron",
-    // theme: "~/.config/rmpc/themes/minimal",
+    theme: "~/.config/rmpc/themes/colors.ron",
     cache_dir: None,
     on_song_change: ["~/.config/rmpc/on_song_change"],
     volume_step: 4,
