@@ -4,6 +4,12 @@
 
 set -e
 
+if [[ -z "$(yadm config local.class 2>/dev/null)" ]]; then
+    echo "✗ local.class not set. Run: yadm config local.class <workstation|server>"
+    echo "  then re-run bootstrap."
+    exit 1
+fi
+
 echo "→ Installing pacman hooks (requires sudo)..."
 sudo mkdir -p /etc/pacman.d/hooks
 sudo cp ~/.local/share/yadm/system/pkglist.hook \
@@ -12,6 +18,12 @@ sudo cp ~/.local/share/yadm/system/pkglist.hook \
 echo "→ Installing firewall..."
 sudo pacman -S --needed ufw
 sudo ufw enable
+
+echo "→ Restoring packages..."
+sudo pacman -S --needed - < ~/.local/share/yadm/pkglist/packages.txt
+if [[ -s ~/.local/share/yadm/pkglist/packages-optional.txt ]]; then
+    sudo pacman -S --needed --asdeps - < ~/.local/share/yadm/pkglist/packages-optional.txt
+fi
 
 echo "→ Enabling user services..."
 systemctl --user enable --now mpd.socket
@@ -28,16 +40,25 @@ if [[ ! -e ~/Images/default-terminal-art.png ]]; then
     echo "      ln -s ~/Images/Wallpaper/<image>.png ~/Images/default-terminal-art.png"
 fi
 
-echo "→ Building Podman nettools image..."
-podman build -t nettools ~/.config/containers/nettools/
+if [[ -f ~/.config/containers/nettools/Containerfile ]]; then
+    echo "→ Building Podman nettools image..."
+    podman build -t nettools ~/.config/containers/nettools/
+else
+    echo "⚠ Skipping nettools image — ~/.config/containers/nettools/Containerfile not present"
+    echo "  (not currently yadm-tracked; restore it manually first)"
+fi
 
-echo "→ Building OpenCode image..."
-podman build -t opencode ~/.config/containers/opencode/Containerfile
+if [[ -f ~/.config/containers/opencode/Containerfile ]]; then
+    echo "→ Building OpenCode image..."
+    podman build -t opencode -f ~/.config/containers/opencode/Containerfile ~/.config/containers/opencode/
+else
+    echo "⚠ Skipping opencode image — ~/.config/containers/opencode/Containerfile not present"
+    echo "  (not currently yadm-tracked; restore it manually first)"
+fi
 
 echo ""
 echo "✓ Bootstrap complete."
 echo ""
 echo "⚠ Remaining manual steps:"
-echo "  - Set yadm class:    yadm config local.class workstation"
 echo "  - Add remote:        yadm remote add origin <url>"
 echo "  - Push:              yadm push -u origin main"
