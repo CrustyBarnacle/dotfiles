@@ -453,6 +453,7 @@ libyuv
 licenses
 lilv
 linux-api-headers
+linux-firmware-amd
 linux-firmware-amdgpu
 linux-firmware-atheros
 linux-firmware-broadcom
@@ -463,6 +464,7 @@ linux-firmware-nvidia
 linux-firmware-other
 linux-firmware-radeon
 linux-firmware-realtek
+linux-firmware-ti
 linux-firmware-whence
 llhttp
 llvm-libs
