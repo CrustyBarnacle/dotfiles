@@ -4,11 +4,12 @@
 
 set -e
 
-if [[ -z "$(yadm config local.class 2>/dev/null)" ]]; then
-    echo "✗ local.class not set. Run: yadm config local.class <workstation|server>"
+if [[ -z "$(yadm config --get-all local.class 2>/dev/null)" ]]; then
+    echo "✗ local.class not set. Run: yadm config --add local.class <workstation|laptop|server>"
     echo "  then re-run bootstrap."
     exit 1
 fi
+YADM_CLASSES="$(yadm config --get-all local.class 2>/dev/null)"
 
 echo "→ Installing pacman hooks (requires sudo)..."
 sudo mkdir -p /etc/pacman.d/hooks
@@ -38,6 +39,41 @@ sudo systemctl enable --now rfkill-before-sleep.service
 if [[ ! -e ~/Images/default-terminal-art.png ]]; then
     echo "→ Set up symlink for Ghostty background"
     echo "      ln -s ~/Images/Wallpaper/<image>.png ~/Images/default-terminal-art.png"
+fi
+
+if grep -qx laptop <<< "$YADM_CLASSES"; then
+    echo "→ Configuring hibernation (laptop class)..."
+
+    SWAPFILE=/swapfile
+    if [[ ! -f "$SWAPFILE" ]]; then
+        SWAP_SIZE_MB=$(awk '/MemTotal/ {printf "%d", $2/1024}' /proc/meminfo)
+        sudo dd if=/dev/zero of="$SWAPFILE" bs=1M count="$SWAP_SIZE_MB" status=progress
+        sudo chmod 600 "$SWAPFILE"
+        sudo mkswap "$SWAPFILE"
+    fi
+
+    grep -qx "$SWAPFILE" <(swapon --show=NAME --noheadings) || sudo swapon "$SWAPFILE"
+    grep -q "^$SWAPFILE " /etc/fstab || echo "$SWAPFILE none swap defaults 0 0" | sudo tee -a /etc/fstab > /dev/null
+
+    if ! grep -qw resume /etc/mkinitcpio.conf; then
+        sudo sed -i '/^HOOKS=/ s/\bblock\b/block resume/' /etc/mkinitcpio.conf
+        sudo mkinitcpio -P
+    fi
+
+    RESUME_UUID=$(findmnt -no UUID -T "$SWAPFILE")
+    RESUME_OFFSET=$(sudo filefrag -v "$SWAPFILE" | awk '$1=="0:" {gsub(/\.\.$/,"",$4); print $4}')
+
+    for entry in /boot/loader/entries/*.conf; do
+        grep -q "resume=" "$entry" || \
+            sudo sed -i "/^options/ s/\$/ resume=UUID=${RESUME_UUID} resume_offset=${RESUME_OFFSET}/" "$entry"
+    done
+
+    sudo mkdir -p /etc/UPower/UPower.conf.d /etc/systemd/logind.conf.d
+    sudo cp ~/.local/share/yadm/system/99-CriticalPowerAction_local.conf \
+        /etc/UPower/UPower.conf.d/99-CriticalPowerAction_local.conf
+    sudo cp ~/.local/share/yadm/system/60-lid-suspend-then-hibernate.conf \
+        /etc/systemd/logind.conf.d/60-lid-suspend-then-hibernate.conf
+    sudo systemctl daemon-reload
 fi
 
 if [[ -f ~/.config/containers/nettools/Containerfile ]]; then
