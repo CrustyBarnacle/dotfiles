@@ -35,6 +35,7 @@ fwupd
 fzf
 ghostty
 github-cli
+glow
 grim
 grub
 gst-plugin-pipewire
@@ -44,6 +45,7 @@ john
 jq
 kitty
 krita
+lemonade-server
 libpulse
 linux
 linux-firmware
@@ -71,6 +73,7 @@ pipewire
 pipewire-alsa
 pipewire-jack
 pipewire-pulse
+pixelorama-bin
 podman
 power-profiles-daemon
 pv
@@ -96,6 +99,7 @@ tinyproxy
 tinyxxd
 tmux
 ttf-nerd-fonts-symbols
+twinejs-standalone
 udiskie
 udisks2
 udisks2-docs
