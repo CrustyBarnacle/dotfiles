@@ -240,4 +240,4 @@ exec copyq --start-server
 bindsym mod4+c exec copyq show
 
 include /etc/sway/config.d/*
-include ~/.conifg/sway/config.d/
+include ~/.config/sway/config.d/*
