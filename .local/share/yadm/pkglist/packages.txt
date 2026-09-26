@@ -12,6 +12,7 @@ brightnessctl
 cava
 cd-discid
 chromium
+clang
 cmatrix
 copyq
 cups
@@ -79,6 +80,7 @@ power-profiles-daemon
 pv
 python-j2cli
 python-lsp-server
+pywal16_cb-git
 qt5-wayland
 qutebrowser
 rmpc
@@ -86,6 +88,7 @@ seclists
 slirp4netns
 slurp
 sof-firmware
+steam
 stegseek
 sudo
 sway
