@@ -1,10 +1,12 @@
-@define-color base-bg #010101;
-@define-color base-text #ffffff;
-@define-color highlight-bg rgba(255, 255, 255, 0.4);
+@import url("colors-waybar.css");
+
+@define-color base-bg @background;
+@define-color base-text @foreground;
+@define-color highlight-bg alpha(@color4, 0.4);
 @define-color highlight-border rgba(255, 255, 255, 0.0);
-@define-color urgent-bg rgba(255, 125, 125, .5);
-@define-color urgent-text #ffffff;
-@define-color urgent-border #ff7e71;
+@define-color urgent-bg alpha(@color1, 0.5);
+@define-color urgent-text @foreground;
+@define-color urgent-border @color1;
 @define-color inactive-text alpha(@base-text, 0.5);
 
 * {
