@@ -50,6 +50,7 @@ conmon
 containers-common
 coreutils
 cpio
+cpptrace
 criu
 crun
 cryptsetup
@@ -333,6 +334,7 @@ libdovi
 libdrm
 libdvdnav
 libdvdread
+libdwarf
 libebur128
 libedit
 libei
@@ -714,10 +716,12 @@ qt6-positioning
 qt6-shadertools
 qt6-svg
 qt6-translations
+qt6-wayland
 qt6-webchannel
 qt6-webengine
 qtkeychain-qt6
 quazip-qt6
+quickshell
 rav1e
 re2
 readline

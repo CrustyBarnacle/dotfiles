@@ -110,6 +110,7 @@ ufw
 unrar-free
 unzip
 uv
+wallpick-git
 waybar
 wayland
 wayland-protocols
