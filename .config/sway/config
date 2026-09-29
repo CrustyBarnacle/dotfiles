@@ -23,7 +23,7 @@ set $browser qutebrowser
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Images/background.png fill
+output * bg ~/Images/background fill
 #
 # Example configuration:
 #
