@@ -125,7 +125,6 @@ gnome-keyring
 gnulib-l10n
 gnupg
 gnutls
-go
 gobject-introspection-runtime
 gperftools
 gpgme
@@ -573,6 +572,7 @@ mdadm
 mesa
 mhash
 miniaudio
+ministream
 minizip
 minizip-ng
 mkinitcpio
@@ -800,6 +800,7 @@ vorbis-tools
 vulkan-icd-loader
 vulkan-mesa-implicit-layers
 vulkan-radeon
+vulkan-tools
 wavpack
 webrtc-audio-processing-1
 wget
