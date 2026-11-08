@@ -46,7 +46,6 @@ john
 jq
 kitty
 krita
-lemonade-server
 libpulse
 linux
 linux-firmware
@@ -84,6 +83,7 @@ pywal16_cb-git
 qt5-wayland
 qutebrowser
 rmpc
+rsync
 seclists
 slirp4netns
 slurp

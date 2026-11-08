@@ -44,6 +44,7 @@ cdparanoia
 cdrtools
 cfitsio
 chromaprint
+clang-libs
 compiler-rt
 confuse
 conmon
@@ -339,7 +340,6 @@ libedit
 libei
 libelf
 libepoxy
-libev
 libevdev
 libevent
 libexif
@@ -496,7 +496,6 @@ libvpx
 libvterm
 libwacom
 libwebp
-libwebsockets
 libwireplumber
 libx11
 libxau
@@ -550,7 +549,9 @@ linux-firmware-realtek
 linux-firmware-ti
 linux-firmware-whence
 llhttp
+llvm
 llvm-libs
+llvm-lit
 lm_sensors
 lmdb
 lsb-release
@@ -566,7 +567,6 @@ m4
 mailcap
 make
 man-db
-mbedtls
 md4c
 mdadm
 mesa
@@ -744,6 +744,7 @@ serd
 shaderc
 shadow
 shared-mime-info
+simdutf
 slang
 snappy
 sndio
