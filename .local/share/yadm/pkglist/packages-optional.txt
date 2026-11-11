@@ -608,6 +608,7 @@ openjph
 openmpi
 openpmix
 openssl
+openssl-3
 openucx
 opus
 opusfile
@@ -673,6 +674,7 @@ python-jaraco.functools
 python-jaraco.text
 python-jedi
 python-jinja
+python-lazy-importer
 python-lsp-jsonrpc
 python-markupsafe
 python-more-itertools
