@@ -340,6 +340,7 @@ libedit
 libei
 libelf
 libepoxy
+libev
 libevdev
 libevent
 libexif
@@ -496,6 +497,7 @@ libvpx
 libvterm
 libwacom
 libwebp
+libwebsockets
 libwireplumber
 libx11
 libxau
@@ -567,6 +569,7 @@ m4
 mailcap
 make
 man-db
+mbedtls
 md4c
 mdadm
 mesa
