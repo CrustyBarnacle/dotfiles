@@ -38,7 +38,12 @@ zstyle ':completion:*' rehash true                      # auto-rehash on new com
 
 # ─── Prompt ───────────────────────────────────────────────────────────────────
 
-PROMPT='%F{040}%n%f @ %F{156}%~%f -> '
+autoload -Uz add-zsh-hook vcs_info
+add-zsh-hook precmd vcs_info
+zstyle ':vcs_info:git:*' formats ' %F{214}(%b)%f'
+setopt PROMPT_SUBST
+
+PROMPT='%F{040}%n%f @ %F{156}%~%f${vcs_info_msg_0_} -> '
 RPROMPT='%*'
 
 # ─── Plugins ──────────────────────────────────────────────────────────────────
